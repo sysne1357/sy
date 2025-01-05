@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>암기 게임</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .hidden {
+            display: none;
+        }
+        .game-container {
+            margin: 20px auto;
+            width: 300px;
+        }
+        .result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>암기 게임</h1>
+    <div class="game-container">
+        <div id="numberDisplay">숫자가 여기에 나타납니다</div>
+        <input id="userInput" class="hidden" type="text" placeholder="숫자를 입력하세요">
+        <button id="startButton">게임 시작</button>
+        <p id="feedback" class="result"></p>
+    </div>
+    <script>
+        const numberDisplay = document.getElementById('numberDisplay');
+        const userInput = document.getElementById('userInput');
+        const startButton = document.getElementById('startButton');
+        const feedback = document.getElementById('feedback');
+
+        let randomNumber = '';
+
+        // 게임 시작 함수
+        startButton.addEventListener('click', () => {
+            randomNumber = Math.floor(100000 + Math.random() * 900000).toString(); // 6자리 랜덤 숫자
+            numberDisplay.textContent = randomNumber;
+            userInput.classList.add('hidden');
+            feedback.textContent = '';
+
+            // 3초 후 숫자를 숨기고 입력란 표시
+            setTimeout(() => {
+                numberDisplay.textContent = '';
+                userInput.classList.remove('hidden');
+                userInput.focus();
+            }, 3000);
+        });
+
+        // 사용자가 입력을 제출했을 때 확인
+        userInput.addEventListener('input', () => {
+            if (userInput.value === randomNumber) {
+                feedback.textContent = '정답입니다!';
+                feedback.style.color = 'green';
+                userInput.value = '';
+                userInput.classList.add('hidden');
+            } else if (userInput.value.length >= randomNumber.length) {
+                feedback.textContent = '틀렸습니다! 다시 시도해보세요.';
+                feedback.style.color = 'red';
+                userInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
